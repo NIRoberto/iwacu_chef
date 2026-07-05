@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { getDb, initDb } from "@/lib/db"
+import prisma from "@/lib/prisma"
 import { formatCurrency } from "@/lib/utils"
 
 export const metadata: Metadata = {
@@ -8,21 +8,12 @@ export const metadata: Metadata = {
   description: "Manage your chef profile, menu, and orders.",
 }
 
-interface OrderRow {
-  id: string
-  items: string
-  total: number
-  status: string
-}
+export default async function DashboardPage() {
+  const orders = await prisma.order.findMany({ orderBy: { createdAt: "desc" } })
 
-export default function DashboardPage() {
-  initDb()
-  const db = getDb()
-  const rows = db.prepare("SELECT id, items, total, status FROM orders ORDER BY createdAt DESC").all() as OrderRow[]
-
-  const totalOrders = rows.length
-  const totalRevenue = rows.reduce((sum, r) => sum + r.total, 0)
-  const pendingOrders = rows.filter((r) => r.status === "pending").length
+  const totalOrders = orders.length
+  const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0)
+  const pendingOrders = orders.filter((o) => o.status === "pending").length
 
   return (
     <div>
@@ -43,17 +34,17 @@ export default function DashboardPage() {
 
       <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-4">Recent orders</h2>
       <div className="space-y-3">
-        {rows.slice(0, 5).map((row) => {
-          const items = JSON.parse(row.items) as { menuItemId: string; name: string; quantity: number; price: number }[]
+        {orders.slice(0, 5).map((order) => {
+          const items = JSON.parse(order.items) as { menuItemId: string; name: string; quantity: number; price: number }[]
           return (
-            <div key={row.id} className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 flex items-center justify-between">
+            <div key={order.id} className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 flex items-center justify-between">
               <div>
-                <p className="font-medium text-neutral-900 dark:text-neutral-100">Order #{row.id.slice(-8)}</p>
+                <p className="font-medium text-neutral-900 dark:text-neutral-100">Order #{order.id.slice(-8)}</p>
                 <p className="text-sm text-neutral-400 dark:text-neutral-500">{items.length} item{items.length > 1 ? "s" : ""}</p>
               </div>
               <div className="text-right">
-                <p className="font-semibold text-neutral-900 dark:text-neutral-100">{formatCurrency(row.total)}</p>
-                <span className="text-xs font-medium text-brand-secondary capitalize">{row.status}</span>
+                <p className="font-semibold text-neutral-900 dark:text-neutral-100">{formatCurrency(order.total)}</p>
+                <span className="text-xs font-medium text-brand-secondary capitalize">{order.status}</span>
               </div>
             </div>
           )

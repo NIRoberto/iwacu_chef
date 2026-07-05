@@ -14,7 +14,7 @@ export interface Chef {
   deliveryAvailable: boolean
   pickupAvailable: boolean
   operatingHours: string
-  priceRange: 1 | 2 | 3
+  priceRange: number
   joinedDate: string
   featured: boolean
 }

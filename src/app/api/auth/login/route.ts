@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server"
-import { getDb, initDb } from "@/lib/db"
+import prisma from "@/lib/prisma"
 
 export async function POST(request: Request) {
   const { email, password } = await request.json()
   if (!email || !password) {
     return NextResponse.json({ error: "Email and password required" }, { status: 400 })
   }
-  initDb()
-  const db = getDb()
-  const user = db.prepare("SELECT id, name, email, role, chefId FROM users WHERE email = ? AND password = ?").get(email, password) as Record<string, unknown> | undefined
+  const user = await prisma.user.findFirst({
+    where: { email, password },
+    select: { id: true, name: true, email: true, role: true, chefId: true },
+  })
   if (!user) {
     return NextResponse.json({ error: "Invalid email or password" }, { status: 401 })
   }

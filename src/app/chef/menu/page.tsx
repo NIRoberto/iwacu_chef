@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { getDb, initDb } from "@/lib/db"
+import prisma from "@/lib/prisma"
 import { MenuItemCard } from "@/components/menu/MenuItemCard"
 import type { MenuItem } from "@/types"
 
@@ -9,24 +9,8 @@ export const metadata: Metadata = {
   description: "Manage your menu items.",
 }
 
-interface MenuRow {
-  id: string
-  chefId: string
-  name: string
-  description: string
-  price: number
-  image: string
-  category: string
-  available: number
-  dietary: string
-  serves: number
-  prepTime: string
-}
-
-export default function ChefMenuPage() {
-  initDb()
-  const db = getDb()
-  const rows = db.prepare("SELECT * FROM menu_items ORDER BY category, name").all() as MenuRow[]
+export default async function ChefMenuPage() {
+  const rows = await prisma.menuItem.findMany({ orderBy: [{ category: "asc" }, { name: "asc" }] })
   const items: MenuItem[] = rows.map(mapMenuItem)
 
   return (
@@ -52,7 +36,7 @@ export default function ChefMenuPage() {
   )
 }
 
-function mapMenuItem(row: MenuRow): MenuItem {
+function mapMenuItem(row: { id: string; chefId: string; name: string; description: string; price: number; image: string; category: string; available: boolean; dietary: string; serves: number; prepTime: string }): MenuItem {
   return {
     id: row.id,
     chefId: row.chefId,
@@ -61,7 +45,7 @@ function mapMenuItem(row: MenuRow): MenuItem {
     price: row.price,
     image: row.image,
     category: row.category,
-    available: Boolean(row.available),
+    available: row.available,
     dietary: JSON.parse(row.dietary),
     serves: row.serves,
     prepTime: row.prepTime,

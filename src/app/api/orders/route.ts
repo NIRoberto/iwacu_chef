@@ -1,23 +1,21 @@
 import { NextResponse } from "next/server"
-import { getDb, initDb } from "@/lib/db"
+import prisma from "@/lib/prisma"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const chefId = searchParams.get("chefId")
   const customerId = searchParams.get("customerId")
-  initDb()
-  const db = getDb()
 
-  let rows: Record<string, unknown>[]
+  let orders
   if (chefId) {
-    rows = db.prepare("SELECT * FROM orders WHERE chefId = ? ORDER BY createdAt DESC").all(chefId) as Record<string, unknown>[]
+    orders = await prisma.order.findMany({ where: { chefId }, orderBy: { createdAt: "desc" } })
   } else if (customerId) {
-    rows = db.prepare("SELECT * FROM orders WHERE customerId = ? ORDER BY createdAt DESC").all(customerId) as Record<string, unknown>[]
+    orders = await prisma.order.findMany({ where: { customerId }, orderBy: { createdAt: "desc" } })
   } else {
-    rows = db.prepare("SELECT * FROM orders ORDER BY createdAt DESC").all() as Record<string, unknown>[]
+    orders = await prisma.order.findMany({ orderBy: { createdAt: "desc" } })
   }
 
-  return NextResponse.json(rows.map(parseOrder))
+  return NextResponse.json(orders.map(parseOrder))
 }
 
 export async function POST(request: Request) {
@@ -25,17 +23,23 @@ export async function POST(request: Request) {
   if (!customerId || !chefId || !items) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
   }
-  initDb()
-  const db = getDb()
   const id = `order-${Date.now()}`
-  db.prepare(
-    "INSERT INTO orders (id, customerId, chefId, items, status, total, note, pickupTime) VALUES (?, ?, ?, ?, 'pending', ?, ?, ?)"
-  ).run(id, customerId, chefId, JSON.stringify(items), total, note || "", pickupTime || "12:00")
-  const order = db.prepare("SELECT * FROM orders WHERE id = ?").get(id) as Record<string, unknown>
+  const order = await prisma.order.create({
+    data: {
+      id,
+      customerId,
+      chefId,
+      items: JSON.stringify(items),
+      status: "pending",
+      total,
+      note: note || "",
+      pickupTime: pickupTime || "12:00",
+    },
+  })
   return NextResponse.json(parseOrder(order), { status: 201 })
 }
 
-function parseOrder(order: Record<string, unknown>) {
+function parseOrder(order: { items: string } & Record<string, unknown>) {
   return {
     ...order,
     items: JSON.parse(order.items as string),

@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Chef {
+  id                String   @id
+  slug              String   @unique
+  name              String
+  title             String
+  bio               String   @default("")
+  story             String   @default("")
+  photo             String   @default("")
+  coverImage        String   @default("")
+  location          String   @default("")
+  cuisineType       String   @default("[]")
+  rating            Float    @default(0)
+  reviewCount       Int      @default(0)
+  deliveryAvailable Boolean  @default(true)
+  pickupAvailable   Boolean  @default(true)
+  operatingHours    String   @default("")
+  priceRange        Int      @default(2)
+  joinedDate        String   @default("")
+  featured          Boolean  @default(false)
+  email             String   @default("")
+  password          String   @default("")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  menuItems         MenuItem[]
+  reviews           Review[]
+  orders            Order[]
+}
+
+model MenuItem {
+  id          String   @id
+  chefId      String
+  name        String
+  description String   @default("")
+  price       Float    @default(0)
+  image       String   @default("")
+  category    String   @default("")
+  available   Boolean  @default(true)
+  dietary     String   @default("[]")
+  serves      Int      @default(1)
+  prepTime    String   @default("15 min")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  chef        Chef     @relation(fields: [chefId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id            String   @id
+  chefId        String
+  customerName  String
+  customerPhoto String   @default("")
+  rating        Int      @default(5)
+  text          String   @default("")
+  date          String   @default("")
+  createdAt     DateTime @default(now())
+  chef          Chef     @relation(fields: [chefId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id          String   @id
+  customerId  String
+  chefId      String
+  items       String   @default("[]")
+  status      String   @default("pending")
+  total       Float    @default(0)
+  note        String   @default("")
+  pickupTime  String   @default("12:00")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  chef        Chef     @relation(fields: [chefId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id        String    @id
+  name      String
+  email     String    @unique
+  password  String
+  role      String    @default("customer")
+  chefId    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}

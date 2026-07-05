@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getDb, initDb } from "@/lib/db"
+import prisma from "@/lib/prisma"
 import { formatCurrency } from "@/lib/utils"
 import { OrderStatusBadge } from "./OrderStatusBadge"
 
@@ -8,34 +8,22 @@ export const metadata: Metadata = {
   description: "View and manage customer orders.",
 }
 
-interface OrderRow {
-  id: string
-  customerId: string
-  items: string
-  total: number
-  status: string
-  note: string
-  createdAt: string
-}
-
-export default function ChefOrdersPage() {
-  initDb()
-  const db = getDb()
-  const rows = db.prepare("SELECT * FROM orders ORDER BY createdAt DESC").all() as OrderRow[]
+export default async function ChefOrdersPage() {
+  const orders = await prisma.order.findMany({ orderBy: { createdAt: "desc" } })
 
   return (
     <div>
       <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-8">Orders</h1>
 
       <div className="space-y-3">
-        {rows.map((row) => {
+        {orders.map((row) => {
           const items = JSON.parse(row.items) as { menuItemId: string; name: string; quantity: number; price: number }[]
           return (
             <div key={row.id} className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5">
               <div className="flex items-center justify-between mb-3">
                 <div>
                   <span className="font-semibold text-neutral-900 dark:text-neutral-100">Order #{row.id.slice(-8)}</span>
-                  <span className="text-sm text-neutral-400 dark:text-neutral-500 ml-3">{new Date(row.createdAt).toLocaleDateString()}</span>
+                  <span className="text-sm text-neutral-400 dark:text-neutral-500 ml-3">{row.createdAt.toLocaleDateString()}</span>
                 </div>
                 <OrderStatusBadge orderId={row.id} status={row.status} />
               </div>

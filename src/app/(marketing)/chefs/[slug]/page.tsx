@@ -11,18 +11,18 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const chef = getChefBySlug(slug)
+  const chef = await getChefBySlug(slug)
   if (!chef) return { title: "Chef Not Found" }
   return { title: chef.name, description: chef.title }
 }
 
 export default async function ChefDetailPage({ params }: Props) {
   const { slug } = await params
-  const chef = getChefBySlug(slug)
+  const chef = await getChefBySlug(slug)
   if (!chef) notFound()
 
-  const chefMenu = getMenuByChefId(chef.id)
-  const chefReviews = getReviewsByChefId(chef.id)
+  const chefMenu = await getMenuByChefId(chef.id)
+  const chefReviews = await getReviewsByChefId(chef.id)
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 py-12 sm:py-16">

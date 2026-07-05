@@ -5,11 +5,11 @@ import { ReviewSection } from "@/components/chefs/ReviewSection"
 import { ChefCard } from "@/components/chefs/ChefCard"
 
 export default async function HomePage() {
-  const chefs = getAllChefs()
+  const chefs = await getAllChefs()
   const featured = chefs.find((c) => c.featured) ?? chefs[0]
   const others = chefs.filter((c) => c.id !== featured.id)
-  const chefMenu = getMenuByChefId(featured.id)
-  const chefReviews = getReviewsByChefId(featured.id)
+  const chefMenu = await getMenuByChefId(featured.id)
+  const chefReviews = await getReviewsByChefId(featured.id)
 
   return (
     <>

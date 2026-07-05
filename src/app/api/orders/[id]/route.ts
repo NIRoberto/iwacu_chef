@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getDb, initDb } from "@/lib/db"
+import prisma from "@/lib/prisma"
 
 export async function PATCH(
   request: Request,
@@ -10,17 +10,18 @@ export async function PATCH(
   if (!status) {
     return NextResponse.json({ error: "Status required" }, { status: 400 })
   }
-  initDb()
-  const db = getDb()
-  const result = db.prepare("UPDATE orders SET status = ?, updatedAt = datetime('now') WHERE id = ?").run(status, id)
-  if (result.changes === 0) {
+  try {
+    const order = await prisma.order.update({
+      where: { id },
+      data: { status },
+    })
+    return NextResponse.json(parseOrder(order))
+  } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 })
   }
-  const order = db.prepare("SELECT * FROM orders WHERE id = ?").get(id) as Record<string, unknown>
-  return NextResponse.json(parseOrder(order))
 }
 
-function parseOrder(order: Record<string, unknown>) {
+function parseOrder(order: { items: string } & Record<string, unknown>) {
   return {
     ...order,
     items: JSON.parse(order.items as string),
