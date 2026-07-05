@@ -20,7 +20,7 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Chef Dashboard",
+  title: "Chef Dashboard — Iwacu Chef",
   description: "Manage your chef profile, menu, and bookings.",
 }
 
@@ -53,7 +53,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="rounded-2xl bg-brand-primary/5 dark:bg-brand-primary/10 p-6 sm:p-8 -m-6 sm:-m-8 mb-0 sm:mb-0">
+      <div className="rounded-2xl bg-brand-primary/5 dark:bg-brand-primary/10 p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100">
@@ -105,9 +105,8 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      {/* Revenue bar + Quick overview */}
+      {/* Revenue bar + Order status */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Mini revenue chart */}
         <div className="lg:col-span-2 rounded-2xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -134,7 +133,6 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Order status summary */}
         <div className="rounded-2xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6">
           <h2 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mb-4">Order status</h2>
           <div className="space-y-4">

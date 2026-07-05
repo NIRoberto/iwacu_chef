@@ -2,7 +2,7 @@ import Link from "next/link"
 import { LayoutDashboard, UtensilsCrossed, Package, CalendarCheck } from "lucide-react"
 
 const navItems = [
-  { href: "/chef/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/chef/menu", label: "Menu", icon: UtensilsCrossed },
   { href: "/chef/orders", label: "Orders", icon: Package },
   { href: "/chef/bookings", label: "Bookings", icon: CalendarCheck },
