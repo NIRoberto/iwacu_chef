@@ -161,6 +161,34 @@ export async function getBookingsByChefId(chefId: string) {
   })
 }
 
+export async function getWeeklyPlansByChefId(chefId: string) {
+  return prisma.weeklyPlan.findMany({ where: { chefId }, orderBy: { dayOfWeek: "asc" } })
+}
+
+export async function upsertWeeklyPlan(data: {
+  chefId: string
+  dayOfWeek: number
+  items: string[]
+}) {
+  const existing = await prisma.weeklyPlan.findUnique({
+    where: { chefId_dayOfWeek: { chefId: data.chefId, dayOfWeek: data.dayOfWeek } },
+  })
+  if (existing) {
+    return prisma.weeklyPlan.update({
+      where: { id: existing.id },
+      data: { items: JSON.stringify(data.items) },
+    })
+  }
+  return prisma.weeklyPlan.create({
+    data: {
+      id: `plan-${data.chefId}-${data.dayOfWeek}-${Date.now()}`,
+      chefId: data.chefId,
+      dayOfWeek: data.dayOfWeek,
+      items: JSON.stringify(data.items),
+    },
+  })
+}
+
 export async function createBooking(data: {
   chefId: string
   customerId: string

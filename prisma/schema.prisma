@@ -73,6 +73,7 @@ model Chef {
   orders            Order[]
   eventTypes        ChefEventType[]
   bookings          Booking[]
+  weeklyPlans       WeeklyPlan[]
 }
 
 model MenuItem {
@@ -116,6 +117,17 @@ model Order {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   chef        Chef     @relation(fields: [chefId], references: [id], onDelete: Cascade)
+}
+
+model WeeklyPlan {
+  id       String   @id
+  chefId   String
+  dayOfWeek Int     @default(0) // 0=Sunday, 1=Monday, ..., 6=Saturday
+  items    String   @default("[]") // JSON array of menu item IDs
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  chef     Chef     @relation(fields: [chefId], references: [id], onDelete: Cascade)
+  @@unique([chefId, dayOfWeek])
 }
 
 model User {

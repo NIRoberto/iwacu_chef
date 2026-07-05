@@ -319,6 +319,36 @@ async function seed() {
   await Promise.all(bookingsData.map((b) => prisma.booking.create({ data: b })))
   console.log(`Inserted ${bookingsData.length} bookings`)
 
+  // ── Weekly Plans ────────────────────────────────
+  const chefItemIds: Record<string, string[]> = {
+    "chef-1": ["item-1","item-2","item-3","item-4","item-5","item-6","item-7","item-8","item-9","item-10","item-11","item-12","item-13","item-14","item-15","item-16","item-17","item-18","item-19","item-20","item-21","item-22","item-23","item-24","item-25","item-26","item-27"],
+    "chef-2": ["item-28","item-29","item-30"],
+    "chef-3": ["item-31","item-32","item-33"],
+    "chef-4": ["item-34","item-35","item-36"],
+    "chef-5": ["item-37","item-38","item-39"],
+    "chef-6": ["item-40","item-41","item-42","item-43","item-44","item-45"],
+  }
+
+  const weeklyPlansData: { id: string; chefId: string; dayOfWeek: number; items: string }[] = []
+  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+  for (const [chefId, itemIds] of Object.entries(chefItemIds)) {
+    dayNames.forEach((_, dayIndex) => {
+      const dayItems = itemIds
+        .sort(() => 0.5 - Math.random())
+        .slice(0, Math.min(3 + Math.floor(Math.random() * 3), itemIds.length))
+      weeklyPlansData.push({
+        id: `plan-${chefId}-${dayIndex}`,
+        chefId,
+        dayOfWeek: dayIndex,
+        items: JSON.stringify(dayItems),
+      })
+    })
+  }
+
+  await Promise.all(weeklyPlansData.map((p) => prisma.weeklyPlan.create({ data: p })))
+  console.log(`Inserted ${weeklyPlansData.length} weekly plans`)
+
   console.log("Seed complete!")
 }
 

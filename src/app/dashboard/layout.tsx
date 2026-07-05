@@ -1,10 +1,11 @@
 import type { ReactNode } from "react"
 import Link from "next/link"
-import { ChefHat, LayoutDashboard, UtensilsCrossed, Package, CalendarCheck } from "lucide-react"
+import { ChefHat, LayoutDashboard, UtensilsCrossed, Package, CalendarCheck, Calendar } from "lucide-react"
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/chef/menu", label: "Menu", icon: UtensilsCrossed },
+  { href: "/chef/plans", label: "Weekly Plans", icon: Calendar },
   { href: "/chef/orders", label: "Orders", icon: Package },
   { href: "/chef/bookings", label: "Bookings", icon: CalendarCheck },
 ]
