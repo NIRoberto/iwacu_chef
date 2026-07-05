@@ -5,7 +5,7 @@ import { getAllChefs, getMenuByChefId, getWeeklyPlansByChefId } from "@/lib/data
 import type { MenuItemRecord } from "@/lib/data-access"
 import type { MenuItem } from "@/types"
 import { AddToCartButton } from "@/components/menu/AddToCartButton"
-import { Clock, ArrowRight, Users, Sparkles, ChefHat } from "lucide-react"
+import { Clock, ArrowRight, Sparkles, ChefHat } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
 
 export const metadata: Metadata = {
@@ -82,7 +82,6 @@ export default async function ChefPlansPage() {
           const plans = chefPlanMap.get(chef.id) ?? []
           const menuItemMap = new Map(menu.map((m) => [m.id, m]))
 
-          // Build day-by-day schedule
           const dayPlan = DAY_NAMES.map((_, dayIndex) => {
             const plan = plans.find((p) => p.dayOfWeek === dayIndex)
             if (!plan) return { dayIndex, items: [] as MenuItemRecord[] }
@@ -109,14 +108,14 @@ export default async function ChefPlansPage() {
                   <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">{chef.title}</p>
                 </div>
                 <Link
-                  href={`/chefs/${chef.slug}`}
+                  href={`/chef-plans/${chef.slug}`}
                   className="shrink-0 text-xs font-medium text-brand-primary hover:text-brand-primary-hover transition-colors inline-flex items-center gap-1"
                 >
-                  Full menu <ArrowRight className="w-3 h-3" />
+                  View plan <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
 
-              {/* Day-by-day grid */}
+              {/* 7-day grid */}
               <div className="grid grid-cols-7 overflow-x-auto border-b border-neutral-100 dark:border-neutral-800">
                 {dayPlan.map((day) => {
                   const isToday = day.dayIndex === today
@@ -135,7 +134,7 @@ export default async function ChefPlansPage() {
                             <div key={item.id} className="text-[10px] sm:text-[11px] leading-tight">
                               <div className="flex items-start justify-between gap-1">
                                 <p className="font-medium text-neutral-900 dark:text-neutral-100 truncate">{item.name}</p>
-                                <AddToCartButton item={item as MenuItem} />
+                                <AddToCartButton item={item as MenuItem} variant="compact" />
                               </div>
                               <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-neutral-400 dark:text-neutral-500">
                                 <span>{formatCurrency(item.price)}</span>
@@ -150,20 +149,6 @@ export default async function ChefPlansPage() {
                     </div>
                   )
                 })}
-              </div>
-
-              {/* Pre-order CTA */}
-              <div className="p-3 sm:p-4 flex items-center justify-between bg-neutral-50 dark:bg-neutral-800/50">
-                <p className="text-xs text-neutral-400 dark:text-neutral-500">
-                  <Users className="w-3 h-3 inline mr-1" />
-                  Pre-order for today or tomorrow
-                </p>
-                <Link
-                  href={`/chefs/${chef.slug}`}
-                  className="text-xs font-medium text-brand-primary hover:text-brand-primary-hover transition-colors inline-flex items-center gap-1"
-                >
-                  Order now <ArrowRight className="w-3 h-3" />
-                </Link>
               </div>
             </div>
           )
