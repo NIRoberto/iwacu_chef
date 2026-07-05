@@ -3,6 +3,7 @@ import Image from "next/image"
 import type { Chef } from "@/types"
 import { Badge } from "@/components/ui/Badge"
 import { StarRating } from "@/components/ui/StarRating"
+import { EVENT_ICONS } from "@/lib/icons"
 
 interface ChefCardProps {
   chef: Chef
@@ -45,7 +46,11 @@ export function ChefCard({ chef }: ChefCardProps) {
           <div className="flex flex-wrap gap-1.5 mt-3">
             {chef.eventTypes?.slice(0, 2).map((et) => (
               <Badge key={et.id} className="text-xs border border-neutral-200 dark:border-neutral-700 bg-transparent text-neutral-600 dark:text-neutral-400">
-                {et.icon} {et.name}
+                {(() => {
+                  const Icon = EVENT_ICONS[et.name]
+                  return Icon ? <Icon className="w-3 h-3 inline mr-0.5" /> : null
+                })()}
+                {et.name}
               </Badge>
             ))}
             {(chef.eventTypes?.length ?? 0) > 2 && (

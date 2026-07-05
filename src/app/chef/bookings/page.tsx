@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import prisma from "@/lib/prisma"
 import { formatCurrency } from "@/lib/utils"
 import { BookingStatusButton } from "./BookingStatusButton"
+import { MapPin, UtensilsCrossed, DollarSign } from "lucide-react"
+import { EVENT_ICONS } from "@/lib/icons"
 
 export const metadata: Metadata = {
   title: "Booking Manager",
@@ -25,7 +27,10 @@ export default async function ChefBookingsPage() {
             <div key={b.id} className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">{b.eventType.icon}</span>
+                  {(() => {
+                    const Icon = EVENT_ICONS[b.eventType.name]
+                    return Icon ? <Icon className="w-5 h-5" /> : null
+                  })()}
                   <div>
                     <span className="font-semibold text-neutral-900 dark:text-neutral-100">{b.eventType.name}</span>
                     <span className="text-sm text-neutral-400 dark:text-neutral-500 ml-2">
@@ -37,9 +42,9 @@ export default async function ChefBookingsPage() {
               </div>
 
               <div className="text-sm text-neutral-500 dark:text-neutral-400 space-y-1">
-                <p>📍 Customer ID: {b.customerId.slice(-8)}</p>
-                {items.length > 0 && <p>🍽️ Menu items selected: {items.length}</p>}
-                <p>💰 Total: {formatCurrency(b.total)}</p>
+                <p className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 inline" /> Customer ID: {b.customerId.slice(-8)}</p>
+                {items.length > 0 && <p className="flex items-center gap-1"><UtensilsCrossed className="w-3.5 h-3.5 inline" /> Menu items selected: {items.length}</p>}
+                <p className="flex items-center gap-1"><DollarSign className="w-3.5 h-3.5 inline" /> Total: {formatCurrency(b.total)}</p>
                 {b.note && <p className="italic mt-2">&ldquo;{b.note}&rdquo;</p>}
               </div>
             </div>

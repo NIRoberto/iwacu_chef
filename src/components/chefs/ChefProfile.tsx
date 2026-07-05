@@ -3,6 +3,7 @@ import { Avatar } from "@/components/ui/Avatar"
 import { Badge } from "@/components/ui/Badge"
 import { StarRating } from "@/components/ui/StarRating"
 import { CUISINE_COLORS } from "@/lib/constants"
+import { Clock, MapPin, DollarSign } from "lucide-react"
 
 interface ChefProfileProps {
   chef: Chef
@@ -39,15 +40,15 @@ export function ChefProfile({ chef }: ChefProfileProps) {
 
           <div className="mt-6 space-y-3 text-neutral-500 dark:text-neutral-400">
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-neutral-300">🕐</span>
+              <Clock className="w-4 h-4 text-neutral-300 shrink-0" />
               <span>{chef.operatingHours}</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-neutral-300">📍</span>
+              <MapPin className="w-4 h-4 text-neutral-300 shrink-0" />
               <span>{chef.deliveryAvailable ? "Delivery available" : "Pickup only"}</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-neutral-300">💰</span>
+              <DollarSign className="w-4 h-4 text-neutral-300 shrink-0" />
               <span>{chef.priceRange === 1 ? "Affordable" : chef.priceRange === 2 ? "Moderate" : "Premium"}</span>
             </div>
           </div>

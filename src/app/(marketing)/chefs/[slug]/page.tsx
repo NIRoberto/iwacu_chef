@@ -9,6 +9,8 @@ import { StarRating } from "@/components/ui/StarRating"
 import { Badge } from "@/components/ui/Badge"
 import { Button } from "@/components/ui/Button"
 import { CUISINE_COLORS } from "@/lib/constants"
+import { MapPin, Clock, Truck } from "lucide-react"
+import { EVENT_ICONS } from "@/lib/icons"
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -41,7 +43,7 @@ export default async function ChefDetailPage({ params }: Props) {
           priority
           sizes="(max-width: 768px) 100vw, 1200px"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-black/40" />
         <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 flex items-center gap-4">
           <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 border-white shadow-lg">
             <Image
@@ -80,7 +82,10 @@ export default async function ChefDetailPage({ params }: Props) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {chef.eventTypes.map((et) => (
                   <div key={et.id} className="flex items-start gap-3 rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4">
-                    <span className="text-2xl mt-0.5">{et.icon}</span>
+                    {(() => {
+                      const Icon = EVENT_ICONS[et.name]
+                      return Icon ? <Icon className="w-6 h-6 mt-0.5 text-brand-primary" /> : null
+                    })()}
                     <div>
                       <p className="font-semibold text-neutral-900 dark:text-neutral-100 text-sm">{et.name}</p>
                       <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">{et.description}</p>
@@ -134,15 +139,15 @@ export default async function ChefDetailPage({ params }: Props) {
 
             <div className="space-y-3 text-sm text-neutral-600 dark:text-neutral-400 mb-6">
               <div className="flex items-center gap-2">
-                <span>📍</span>
+                <MapPin className="w-4 h-4 text-neutral-400 shrink-0" />
                 <span>{chef.location}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span>🕐</span>
+                <Clock className="w-4 h-4 text-neutral-400 shrink-0" />
                 <span>{chef.operatingHours}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span>🚚</span>
+                <Truck className="w-4 h-4 text-neutral-400 shrink-0" />
                 <span>{chef.deliveryAvailable ? "Delivery available" : "Pickup only"}</span>
               </div>
             </div>
@@ -153,7 +158,11 @@ export default async function ChefDetailPage({ params }: Props) {
                 <div className="flex flex-wrap gap-1.5 mb-6">
                   {chef.eventTypes.map((et) => (
                     <Badge key={et.id} className="bg-brand-primary-light text-brand-primary text-xs">
-                      {et.icon} {et.name}
+                      {(() => {
+                        const Icon = EVENT_ICONS[et.name]
+                        return Icon ? <Icon className="w-3 h-3 inline mr-1" /> : null
+                      })()}
+                      {et.name}
                     </Badge>
                   ))}
                 </div>

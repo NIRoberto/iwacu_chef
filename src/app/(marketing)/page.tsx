@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { getAllChefs, getEventTypes } from "@/lib/data-access"
 import { ChefCard } from "@/components/chefs/ChefCard"
-import { StarRating } from "@/components/ui/StarRating"
+import { EVENT_ICONS } from "@/lib/icons"
 
 export default async function HomePage() {
   const chefs = await getAllChefs()
@@ -12,7 +12,7 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-brand-primary/5 to-white dark:from-brand-primary/10 dark:to-neutral-950">
+      <section className="relative overflow-hidden bg-brand-primary-light/50 dark:bg-brand-primary-light/10">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-24">
           <div className="max-w-2xl">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-neutral-900 dark:text-white">
@@ -28,7 +28,10 @@ export default async function HomePage() {
                   href={`/?event=${et.slug}`}
                   className="inline-flex items-center gap-2 rounded-full border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-5 py-2.5 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:border-brand-primary hover:text-brand-primary dark:hover:border-brand-primary transition-colors"
                 >
-                  <span>{et.icon}</span>
+                  {(() => {
+                    const Icon = EVENT_ICONS[et.name]
+                    return Icon ? <Icon className="w-4 h-4" /> : null
+                  })()}
                   {et.name}
                 </Link>
               ))}
@@ -77,7 +80,10 @@ export default async function HomePage() {
                 href={`/?event=${et.slug}`}
                 className="flex flex-col items-center gap-3 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-6 hover:border-brand-primary dark:hover:border-brand-primary hover:shadow-md transition-all text-center group"
               >
-                <span className="text-3xl">{et.icon}</span>
+                {(() => {
+                  const Icon = EVENT_ICONS[et.name]
+                  return Icon ? <Icon className="w-8 h-8 text-brand-primary" /> : null
+                })()}
                 <div>
                   <p className="font-semibold text-neutral-900 dark:text-neutral-100 group-hover:text-brand-primary transition-colors">{et.name}</p>
                   <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-1 line-clamp-2">{et.description}</p>

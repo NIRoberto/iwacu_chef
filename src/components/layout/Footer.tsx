@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { SITE_NAME, SITE_TAGLINE } from "@/lib/constants"
+import { ChefHat } from "lucide-react"
 
 export function Footer() {
   return (
@@ -7,8 +8,9 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="text-xl font-bold text-white">
-              🍳 {SITE_NAME}
+            <Link href="/" className="inline-flex items-center gap-2 text-xl font-bold text-white">
+              <ChefHat className="w-6 h-6" />
+              {SITE_NAME}
             </Link>
             <p className="mt-2 text-sm text-neutral-400">{SITE_TAGLINE}</p>
             <p className="mt-1 text-sm text-neutral-400">Connecting you with local home chefs in Rwanda.</p>
@@ -18,6 +20,8 @@ export function Footer() {
             <h3 className="text-sm font-semibold text-white mb-3">Explore</h3>
             <ul className="space-y-2">
               <li><Link href="/" className="text-sm hover:text-white transition-colors">Browse Chefs</Link></li>
+              <li><Link href="/chef-plans" className="text-sm hover:text-white transition-colors">Chef Plans</Link></li>
+              <li><Link href="/how-it-works" className="text-sm hover:text-white transition-colors">How It Works</Link></li>
               <li><Link href="/about" className="text-sm hover:text-white transition-colors">About Us</Link></li>
             </ul>
           </div>

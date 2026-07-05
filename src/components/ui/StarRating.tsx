@@ -8,7 +8,7 @@ export function StarRating({ rating, size = "sm", showValue = true }: StarRating
   const sizes = { sm: "text-sm", md: "text-lg", lg: "text-2xl" }
 
   return (
-    <span className={`inline-flex items-center gap-1 text-accent-gold ${sizes[size]}`} aria-label={`${rating} out of 5 stars`}>
+    <span className={`inline-flex items-center gap-1 text-brand-primary ${sizes[size]}`} aria-label={`${rating} out of 5 stars`}>
       <span className="tracking-wide">
         {"★".repeat(Math.floor(rating))}
         {rating % 1 >= 0.5 && "½"}

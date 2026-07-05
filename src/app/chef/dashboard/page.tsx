@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import prisma from "@/lib/prisma"
 import { formatCurrency } from "@/lib/utils"
+import { EVENT_ICONS } from "@/lib/icons"
 
 export const metadata: Metadata = {
   title: "Chef Dashboard",
@@ -51,7 +52,11 @@ export default async function DashboardPage() {
               <div key={b.id} className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 flex items-center justify-between">
                 <div>
                   <p className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">
-                    {b.eventType.icon} {b.eventType.name}
+                    {(() => {
+                      const Icon = EVENT_ICONS[b.eventType.name]
+                      return Icon ? <Icon className="w-4 h-4 inline mr-1" /> : null
+                    })()}
+                    {b.eventType.name}
                   </p>
                   <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">
                     {b.date.toLocaleDateString()} · {b.guestCount} guest{b.guestCount > 1 ? "s" : ""} · {items.length} menu items

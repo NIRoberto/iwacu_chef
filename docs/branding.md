@@ -84,9 +84,7 @@ Minimum clear space = height of the "I" in Iwacu on all sides.
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| `--color-accent-gold` | `#D4A853` | Ratings, achievements |
 | `--color-accent-error` | `#C24038` | Errors, declines |
-| `--color-accent-info` | `#3B7EA5` | Information |
 
 ### Accessibility
 All text/background combinations must meet WCAG AA (4.5:1 contrast ratio).
@@ -198,9 +196,7 @@ Brand tokens are defined in `src/app/globals.css` using CSS custom properties:
   --color-brand-primary-light: #F5E6D3;
   --color-brand-secondary: #2D6A4F;
   --color-brand-secondary-hover: #1B4332;
-  --color-accent-gold: #D4A853;
   --color-accent-error: #C24038;
-  --color-accent-info: #3B7EA5;
 }
 ```
 

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { NAV_LINKS, SITE_NAME } from "@/lib/constants"
 import { useCart } from "@/lib/cart-context"
+import { ChefHat, Users, Calendar, Compass, Info } from "lucide-react"
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -41,20 +42,29 @@ export function Header() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-xl font-bold text-neutral-900 dark:text-white">
-            <span className="text-brand-primary text-2xl">🍳</span>
+            <ChefHat className="text-brand-primary w-7 h-7" />
             <span>{SITE_NAME}</span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-brand-primary dark:hover:text-brand-primary transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+          <nav className="hidden md:flex items-center gap-6" aria-label="Main navigation">
+            {NAV_LINKS.map((link) => {
+              const navIcons: Record<string, React.ReactNode> = {
+                "/": <Users className="w-4 h-4" />,
+                "/chef-plans": <Calendar className="w-4 h-4" />,
+                "/how-it-works": <Compass className="w-4 h-4" />,
+                "/about": <Info className="w-4 h-4" />,
+              }
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:text-brand-primary dark:hover:text-brand-primary transition-colors"
+                >
+                  {navIcons[link.href]}
+                  {link.label}
+                </Link>
+              )
+            })}
           </nav>
 
           <div className="hidden md:flex items-center gap-3">

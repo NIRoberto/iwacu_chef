@@ -122,11 +122,11 @@ async function seed() {
 
   // ── Event Types ───────────────────────────────
   const eventTypesData = [
-    { id: "evt-1", name: "Wedding", slug: "wedding", description: "Full catering for wedding ceremonies and receptions", icon: "💍" },
-    { id: "evt-2", name: "Private Dinner", slug: "private-dinner", description: "Intimate dinner parties at your home", icon: "🍽️" },
-    { id: "evt-3", name: "Corporate Event", slug: "corporate", description: "Office lunches, team building, and client events", icon: "🏢" },
-    { id: "evt-4", name: "Birthday", slug: "birthday", description: "Birthday parties from intimate to grand", icon: "🎂" },
-    { id: "evt-5", name: "Family Gathering", slug: "family-gathering", description: "Family reunions, holidays, and celebrations", icon: "👨‍👩‍👧‍👦" },
+    { id: "evt-1", name: "Wedding", slug: "wedding", description: "Full catering for wedding ceremonies and receptions", icon: "wedding" },
+    { id: "evt-2", name: "Private Dinner", slug: "private-dinner", description: "Intimate dinner parties at your home", icon: "dinner" },
+    { id: "evt-3", name: "Corporate Event", slug: "corporate", description: "Office lunches, team building, and client events", icon: "corporate" },
+    { id: "evt-4", name: "Birthday", slug: "birthday", description: "Birthday parties from intimate to grand", icon: "birthday" },
+    { id: "evt-5", name: "Family Gathering", slug: "family-gathering", description: "Family reunions, holidays, and celebrations", icon: "family" },
   ]
   await Promise.all(eventTypesData.map((e) => prisma.eventType.create({ data: e })))
   console.log(`Inserted ${eventTypesData.length} event types`)

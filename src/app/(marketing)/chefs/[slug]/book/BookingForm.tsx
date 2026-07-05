@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import type { Chef, EventTypeInfo } from "@/types"
+import { PartyPopper } from "lucide-react"
+import { EVENT_ICONS } from "@/lib/icons"
 
 interface Props {
   chef: Chef
@@ -23,7 +25,7 @@ export function BookingForm({ chef, eventTypes }: Props) {
   if (done) {
     return (
       <div className="text-center py-16">
-        <div className="text-5xl mb-4">🎉</div>
+        <PartyPopper className="w-12 h-12 mx-auto mb-4 text-brand-primary" />
         <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">Request sent!</h2>
         <p className="text-neutral-500 dark:text-neutral-400 mb-6">
           {chef.name} will review your booking request and get back to you soon.
@@ -93,7 +95,10 @@ export function BookingForm({ chef, eventTypes }: Props) {
                     : "border-neutral-100 dark:border-neutral-800 opacity-40 cursor-not-allowed text-neutral-400"
                 }`}
               >
-                <span className="text-2xl">{et.icon}</span>
+                    {(() => {
+                      const Icon = EVENT_ICONS[et.name]
+                      return Icon ? <Icon className="w-7 h-7" /> : null
+                    })()}
                 <span className="text-xs font-semibold">{et.name}</span>
               </button>
             )
