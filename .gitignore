@@ -41,3 +41,7 @@ next-env.d.ts
 # generated
 /src/generated/prisma
 
+# database artifacts
+dev.db
+*.db
+
