@@ -1,6 +1,6 @@
 import Link from "next/link"
+import Image from "next/image"
 import type { Chef } from "@/types"
-import { Avatar } from "@/components/ui/Avatar"
 import { Badge } from "@/components/ui/Badge"
 import { StarRating } from "@/components/ui/StarRating"
 
@@ -11,30 +11,46 @@ interface ChefCardProps {
 export function ChefCard({ chef }: ChefCardProps) {
   return (
     <Link href={`/chefs/${chef.slug}`} className="group block">
-      <article className="rounded-2xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden transition-shadow hover:shadow-lg dark:hover:shadow-neutral-900/60">
-        <div className="aspect-[4/3] bg-neutral-100 relative overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
-            style={{ backgroundImage: `url(${chef.coverImage})` }}
+      <article className="rounded-xl overflow-hidden bg-white dark:bg-neutral-900 transition-shadow hover:shadow-lg dark:hover:shadow-neutral-900/60">
+        <div className="aspect-[4/3] relative overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+          <Image
+            src={chef.coverImage}
+            alt={`${chef.name}'s kitchen`}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
-        </div>
-        <div className="p-5">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-3">
-              <Avatar src={chef.photo} name={chef.name} size="md" />
-              <div>
-                <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 group-hover:text-brand-primary transition-colors">
-                  {chef.name}
-                </h3>
-                <p className="text-sm text-neutral-400 dark:text-neutral-500">{chef.location}</p>
-              </div>
-            </div>
-            <span className="text-xs text-neutral-300 whitespace-nowrap">{chef.priceRange === 1 ? "$" : chef.priceRange === 2 ? "$$" : "$$$"}</span>
+          <div className="absolute top-3 left-3">
+            <span className="text-xs font-semibold bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm rounded-full px-3 py-1 text-neutral-700 dark:text-neutral-300 shadow-sm">
+              {chef.priceRange === 1 ? "$" : chef.priceRange === 2 ? "$$" : "$$$"}
+            </span>
           </div>
-          <p className="mt-3 text-sm text-neutral-500 dark:text-neutral-400 line-clamp-2">{chef.title}</p>
-          <div className="mt-3 flex items-center justify-between">
+          {chef.featured && (
+            <div className="absolute top-3 right-3">
+              <span className="text-xs font-semibold bg-brand-primary text-white rounded-full px-3 py-1 shadow-sm">
+                Featured
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="p-4">
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-brand-primary transition-colors">
+              {chef.name}
+            </h3>
             <StarRating rating={chef.rating} size="sm" />
-            <Badge>{chef.cuisineType[0]}</Badge>
+          </div>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5 truncate">{chef.title}</p>
+          <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-1">{chef.location}</p>
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            {chef.eventTypes?.slice(0, 2).map((et) => (
+              <Badge key={et.id} className="text-xs border border-neutral-200 dark:border-neutral-700 bg-transparent text-neutral-600 dark:text-neutral-400">
+                {et.icon} {et.name}
+              </Badge>
+            ))}
+            {(chef.eventTypes?.length ?? 0) > 2 && (
+              <span className="text-xs text-neutral-400 dark:text-neutral-500 self-center">+{chef.eventTypes!.length - 2} more</span>
+            )}
           </div>
         </div>
       </article>

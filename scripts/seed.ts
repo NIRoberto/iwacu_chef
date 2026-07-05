@@ -10,6 +10,9 @@ async function seed() {
   console.log("Seeding database...")
 
   // Clear existing data
+  await prisma.booking.deleteMany()
+  await prisma.chefEventType.deleteMany()
+  await prisma.eventType.deleteMany()
   await prisma.order.deleteMany()
   await prisma.review.deleteMany()
   await prisma.menuItem.deleteMany()
@@ -116,6 +119,37 @@ async function seed() {
     }),
   ])
   console.log(`Inserted ${chefs.length} chefs`)
+
+  // ── Event Types ───────────────────────────────
+  const eventTypesData = [
+    { id: "evt-1", name: "Wedding", slug: "wedding", description: "Full catering for wedding ceremonies and receptions", icon: "💍" },
+    { id: "evt-2", name: "Private Dinner", slug: "private-dinner", description: "Intimate dinner parties at your home", icon: "🍽️" },
+    { id: "evt-3", name: "Corporate Event", slug: "corporate", description: "Office lunches, team building, and client events", icon: "🏢" },
+    { id: "evt-4", name: "Birthday", slug: "birthday", description: "Birthday parties from intimate to grand", icon: "🎂" },
+    { id: "evt-5", name: "Family Gathering", slug: "family-gathering", description: "Family reunions, holidays, and celebrations", icon: "👨‍👩‍👧‍👦" },
+  ]
+  await Promise.all(eventTypesData.map((e) => prisma.eventType.create({ data: e })))
+  console.log(`Inserted ${eventTypesData.length} event types`)
+
+  // ── Chef Event Types ──────────────────────────
+  const chefEventTypesData = [
+    { chefId: "chef-1", eventTypeId: "evt-2" },
+    { chefId: "chef-1", eventTypeId: "evt-4" },
+    { chefId: "chef-1", eventTypeId: "evt-5" },
+    { chefId: "chef-2", eventTypeId: "evt-1" },
+    { chefId: "chef-2", eventTypeId: "evt-2" },
+    { chefId: "chef-2", eventTypeId: "evt-3" },
+    { chefId: "chef-3", eventTypeId: "evt-1" },
+    { chefId: "chef-3", eventTypeId: "evt-5" },
+    { chefId: "chef-4", eventTypeId: "evt-3" },
+    { chefId: "chef-4", eventTypeId: "evt-2" },
+    { chefId: "chef-5", eventTypeId: "evt-4" },
+    { chefId: "chef-5", eventTypeId: "evt-5" },
+    { chefId: "chef-6", eventTypeId: "evt-2" },
+    { chefId: "chef-6", eventTypeId: "evt-3" },
+  ]
+  await Promise.all(chefEventTypesData.map((c) => prisma.chefEventType.create({ data: c })))
+  console.log(`Inserted ${chefEventTypesData.length} chef-event-type associations`)
 
   // ── Menu Items ────────────────────────────────
   const mealImages = [
@@ -266,6 +300,24 @@ async function seed() {
     ordersData.map((o) => prisma.order.create({ data: o }))
   )
   console.log(`Inserted ${orders.length} orders`)
+
+  // ── Bookings ──────────────────────────────────
+  const bookingsData = [
+    {
+      id: "booking-1", chefId: "chef-1", customerId: "user-2", eventTypeId: "evt-2",
+      date: new Date("2025-07-15T18:00:00Z"), guestCount: 6,
+      menuPlan: JSON.stringify(["item-5", "item-16", "item-9", "item-19"]),
+      status: "confirmed", total: 21000, note: "Birthday surprise for my husband!",
+    },
+    {
+      id: "booking-2", chefId: "chef-2", customerId: "user-3", eventTypeId: "evt-1",
+      date: new Date("2025-08-01T14:00:00Z"), guestCount: 50,
+      menuPlan: JSON.stringify(["item-28", "item-29", "item-30"]),
+      status: "pending", total: 155000, note: "Wedding reception at Kigali Serena Hotel",
+    },
+  ]
+  await Promise.all(bookingsData.map((b) => prisma.booking.create({ data: b })))
+  console.log(`Inserted ${bookingsData.length} bookings`)
 
   console.log("Seed complete!")
 }

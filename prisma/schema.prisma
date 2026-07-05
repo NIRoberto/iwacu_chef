@@ -7,6 +7,44 @@ datasource db {
   provider = "postgresql"
 }
 
+model EventType {
+  id          String          @id
+  name        String          @unique
+  slug        String          @unique
+  description String          @default("")
+  icon        String          @default("")
+  createdAt   DateTime        @default(now())
+  chefs       ChefEventType[]
+  bookings    Booking[]
+}
+
+model ChefEventType {
+  chefId      String
+  eventTypeId String
+  chef        Chef      @relation(fields: [chefId], references: [id], onDelete: Cascade)
+  eventType   EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+  price       Float?
+  description String?
+  @@id([chefId, eventTypeId])
+}
+
+model Booking {
+  id          String    @id
+  chefId      String
+  customerId  String
+  eventTypeId String
+  date        DateTime
+  guestCount  Int       @default(1)
+  menuPlan    String    @default("[]")
+  status      String    @default("pending")
+  total       Float     @default(0)
+  note        String    @default("")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  chef        Chef      @relation(fields: [chefId], references: [id], onDelete: Cascade)
+  eventType   EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+}
+
 model Chef {
   id                String   @id
   slug              String   @unique
@@ -33,6 +71,8 @@ model Chef {
   menuItems         MenuItem[]
   reviews           Review[]
   orders            Order[]
+  eventTypes        ChefEventType[]
+  bookings          Booking[]
 }
 
 model MenuItem {

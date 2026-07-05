@@ -9,6 +9,7 @@ export interface Chef {
   coverImage: string
   location: string
   cuisineType: string[]
+  eventTypes?: EventTypeInfo[]
   rating: number
   reviewCount: number
   deliveryAvailable: boolean
@@ -17,6 +18,14 @@ export interface Chef {
   priceRange: number
   joinedDate: string
   featured: boolean
+}
+
+export interface EventTypeInfo {
+  id: string
+  name: string
+  slug: string
+  description: string
+  icon: string
 }
 
 export interface MenuItem {
@@ -74,3 +83,24 @@ export interface CartItem {
   menuItem: MenuItem
   quantity: number
 }
+
+export interface Booking {
+  id: string
+  chefId: string
+  customerId: string
+  eventTypeId: string
+  eventType?: EventTypeInfo
+  date: string
+  guestCount: number
+  menuPlan: string[]
+  status: BookingStatus
+  total: number
+  note: string
+  createdAt: string
+}
+
+export type BookingStatus =
+  | "pending"
+  | "confirmed"
+  | "cancelled"
+  | "completed"
