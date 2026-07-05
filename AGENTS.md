@@ -58,6 +58,7 @@ Key conventions:
 - Added 5 more reviews for chef-1 (now 8 total)
 - Redesigned home page as rich single-chef profile: hero with cover image overlay, stats bar, about section, full categorized menu grid, reviews, and "more chefs" section at bottom
 - Build passes TypeScript; all pushed to `https://github.com/NIRoberto/iwacu_chef.git`
+- Added PWA support: web app manifest (`manifest.ts`), service worker (`public/sw.js`) with cache-first/stale-while-revalidate strategies, client-side SW registration, viewport + theme-color + apple-web-app meta tags
 
 ### Blocked
 - (none)

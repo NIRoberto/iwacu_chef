@@ -5,10 +5,9 @@ import Link from "next/link"
 import { useCart } from "@/lib/cart-context"
 import { Button } from "@/components/ui/Button"
 import { formatCurrency } from "@/lib/utils"
-import type { Order } from "@/types"
 
 export function CartContent() {
-  const { items, updateQuantity, removeItem, total, clearCart } = useCart()
+  const { items, updateQuantity, removeItem, total, clearCart, chefId } = useCart()
   const router = useRouter()
 
   if (items.length === 0) {
@@ -27,28 +26,39 @@ export function CartContent() {
     )
   }
 
-  function handlePlaceOrder() {
-    const orders: Order[] = JSON.parse(localStorage.getItem("orders") || "[]")
-    const newOrder: Order = {
-      id: `order-${Date.now()}`,
-      customerId: "customer-1",
-      chefId: items[0].menuItem.chefId,
-      items: items.map((i) => ({
-        menuItemId: i.menuItem.id,
-        name: i.menuItem.name,
-        quantity: i.quantity,
-        price: i.menuItem.price,
-      })),
-      status: "pending",
-      total,
-      createdAt: new Date().toISOString(),
-      pickupTime: "12:00",
-      note: "",
+  async function handlePlaceOrder() {
+    const user = JSON.parse(localStorage.getItem("currentUser") || "{}")
+    if (!user.id) {
+      router.push("/auth/login")
+      return
     }
-    orders.unshift(newOrder)
-    localStorage.setItem("orders", JSON.stringify(orders))
-    clearCart()
-    router.push("/my-orders")
+
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerId: user.id,
+          chefId,
+          items: items.map((i) => ({
+            menuItemId: i.menuItem.id,
+            name: i.menuItem.name,
+            quantity: i.quantity,
+            price: i.menuItem.price,
+          })),
+          total,
+        }),
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        alert(data.error || "Failed to place order")
+        return
+      }
+      clearCart()
+      router.push("/my-orders")
+    } catch {
+      alert("Network error. Please try again.")
+    }
   }
 
   return (
@@ -98,9 +108,7 @@ export function CartContent() {
         </div>
       </div>
 
-      <Button className="w-full" onClick={handlePlaceOrder}>
-        Place order
-      </Button>
+      <Button className="w-full" onClick={handlePlaceOrder}>Place order</Button>
     </div>
   )
 }

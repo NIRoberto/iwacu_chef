@@ -1,54 +1,61 @@
 import type { Metadata } from "next"
-import { orders } from "@/lib/data/orders"
+import { getDb, initDb } from "@/lib/db"
 import { formatCurrency } from "@/lib/utils"
+import { OrderStatusBadge } from "./OrderStatusBadge"
 
 export const metadata: Metadata = {
   title: "Order Manager",
   description: "View and manage customer orders.",
 }
 
-const statusColors: Record<string, string> = {
-  pending: "bg-amber-50 text-amber-700",
-  confirmed: "bg-blue-50 text-blue-700",
-  preparing: "bg-brand-primary-light text-brand-primary",
-  ready: "bg-green-50 text-green-700",
-  completed: "bg-neutral-100 text-neutral-500",
-  declined: "bg-red-50 text-red-700",
+interface OrderRow {
+  id: string
+  customerId: string
+  items: string
+  total: number
+  status: string
+  note: string
+  createdAt: string
 }
 
 export default function ChefOrdersPage() {
+  initDb()
+  const db = getDb()
+  const rows = db.prepare("SELECT * FROM orders ORDER BY createdAt DESC").all() as OrderRow[]
+
   return (
     <div>
-      <h1 className="text-2xl font-bold text-neutral-900 mb-8">Orders</h1>
+      <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-8">Orders</h1>
 
       <div className="space-y-3">
-        {orders.map((order) => (
-          <div key={order.id} className="rounded-xl border border-neutral-100 bg-white p-5">
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <span className="font-semibold text-neutral-900">Order #{order.id}</span>
-                <span className="text-sm text-neutral-400 ml-3">{new Date(order.createdAt).toLocaleDateString()}</span>
-              </div>
-              <span className={`text-xs font-medium rounded-full px-3 py-1 capitalize ${statusColors[order.status]}`}>
-                {order.status}
-              </span>
-            </div>
-
-            <div className="space-y-2">
-              {order.items.map((item) => (
-                <div key={item.menuItemId} className="flex justify-between text-sm">
-                  <span className="text-neutral-500">{item.quantity}x {item.name}</span>
-                  <span className="text-neutral-700 font-medium">{formatCurrency(item.price * item.quantity)}</span>
+        {rows.map((row) => {
+          const items = JSON.parse(row.items) as { menuItemId: string; name: string; quantity: number; price: number }[]
+          return (
+            <div key={row.id} className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <span className="font-semibold text-neutral-900 dark:text-neutral-100">Order #{row.id.slice(-8)}</span>
+                  <span className="text-sm text-neutral-400 dark:text-neutral-500 ml-3">{new Date(row.createdAt).toLocaleDateString()}</span>
                 </div>
-              ))}
-            </div>
+                <OrderStatusBadge orderId={row.id} status={row.status} />
+              </div>
 
-            <div className="mt-3 pt-3 border-t border-neutral-100 flex justify-between items-center">
-              <span className="text-xs text-neutral-400">{order.note && `Note: ${order.note}`}</span>
-              <span className="font-bold text-neutral-900">{formatCurrency(order.total)}</span>
+              <div className="space-y-2">
+                {items.map((item) => (
+                  <div key={item.menuItemId} className="flex justify-between text-sm">
+                    <span className="text-neutral-500 dark:text-neutral-400">{item.quantity}x {item.name}</span>
+                    <span className="text-neutral-700 dark:text-neutral-300 font-medium">{formatCurrency(item.price * item.quantity)}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex justify-between items-center">
+                <span className="text-xs text-neutral-400 dark:text-neutral-500">{row.note ? `Note: ${row.note}` : ""}</span>
+                <span className="font-bold text-neutral-900 dark:text-neutral-100">{formatCurrency(row.total)}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

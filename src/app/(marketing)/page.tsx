@@ -1,17 +1,15 @@
 import Link from "next/link"
-import { chefs } from "@/lib/data/chefs"
-import { menuItems } from "@/lib/data/menus"
-import { reviews } from "@/lib/data/reviews"
-import { ChefProfile } from "@/components/chefs/ChefProfile"
+import { getAllChefs, getMenuByChefId, getReviewsByChefId } from "@/lib/data-access"
 import { MenuList } from "@/components/menu/MenuList"
 import { ReviewSection } from "@/components/chefs/ReviewSection"
 import { ChefCard } from "@/components/chefs/ChefCard"
 
 export default async function HomePage() {
+  const chefs = getAllChefs()
   const featured = chefs.find((c) => c.featured) ?? chefs[0]
   const others = chefs.filter((c) => c.id !== featured.id)
-  const chefMenu = menuItems.filter((m) => m.chefId === featured.id)
-  const chefReviews = reviews.filter((r) => r.chefId === featured.id)
+  const chefMenu = getMenuByChefId(featured.id)
+  const chefReviews = getReviewsByChefId(featured.id)
 
   return (
     <>
@@ -45,12 +43,6 @@ export default async function HomePage() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
-                </Link>
-                <Link
-                  href={`/chefs/${featured.slug}`}
-                  className="inline-flex items-center gap-2 rounded-full bg-white/15 backdrop-blur-sm px-6 py-3 text-sm font-medium text-white hover:bg-white/25 transition-colors border border-white/20"
-                >
-                  See reviews
                 </Link>
               </div>
             </div>
@@ -104,9 +96,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-                Menu
-              </h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100">Menu</h2>
               <p className="mt-1 text-neutral-500 dark:text-neutral-400">
                 {chefMenu.length} items across {new Set(chefMenu.map((i) => i.category)).size} categories
               </p>
@@ -119,14 +109,6 @@ export default async function HomePage() {
             </Link>
           </div>
           <MenuList items={chefMenu} />
-          <div className="mt-8 text-center sm:hidden">
-            <Link
-              href={`/chefs/${featured.slug}`}
-              className="inline-flex text-sm font-medium text-brand-primary hover:text-brand-primary-hover transition-colors"
-            >
-              View full menu &rarr;
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -134,43 +116,31 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-              What customers say
-            </h2>
-            <p className="mt-1 text-neutral-500 dark:text-neutral-400">
-              {featured.rating} stars from {chefReviews.length} reviews
-            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100">What customers say</h2>
+            <p className="mt-1 text-neutral-500 dark:text-neutral-400">{featured.rating} stars from {chefReviews.length} reviews</p>
           </div>
         </div>
         <ReviewSection reviews={chefReviews} />
       </section>
 
       {/* Other chefs */}
-      <section className="bg-neutral-50 dark:bg-neutral-900 py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-                More chefs near you
-              </h2>
-              <p className="mt-1 text-neutral-500 dark:text-neutral-400">
-                {others.length} other home chefs in Kigali
-              </p>
+      {others.length > 0 && (
+        <section className="bg-neutral-50 dark:bg-neutral-900 py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="flex items-end justify-between mb-10">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100">More chefs near you</h2>
+                <p className="mt-1 text-neutral-500 dark:text-neutral-400">{others.length} other home chefs in Kigali</p>
+              </div>
             </div>
-            <Link
-              href="/"
-              className="hidden sm:inline-flex text-sm font-medium text-brand-primary hover:text-brand-primary-hover transition-colors"
-            >
-              Browse all &rarr;
-            </Link>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {others.map((chef) => (
+                <ChefCard key={chef.id} chef={chef} />
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {others.map((chef) => (
-              <ChefCard key={chef.id} chef={chef} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   )
 }

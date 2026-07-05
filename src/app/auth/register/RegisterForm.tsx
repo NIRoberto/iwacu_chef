@@ -9,24 +9,35 @@ export function RegisterForm() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
   const router = useRouter()
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const users = JSON.parse(localStorage.getItem("users") || "[]")
-    if (users.some((u: Record<string, string>) => u.email === email)) {
-      alert("An account with this email already exists.")
-      return
+    setError("")
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error || "Registration failed")
+        return
+      }
+      localStorage.setItem("currentUser", JSON.stringify(data.user))
+      router.push("/")
+    } catch {
+      setError("Network error. Please try again.")
     }
-    const user = { name, email, password }
-    users.push(user)
-    localStorage.setItem("users", JSON.stringify(users))
-    localStorage.setItem("currentUser", JSON.stringify(user))
-    router.push("/")
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <p className="text-sm text-accent-error bg-accent-error/10 rounded-lg px-3 py-2">{error}</p>
+      )}
       <Input
         label="Full name"
         type="text"
@@ -54,9 +65,7 @@ export function RegisterForm() {
         minLength={8}
         autoComplete="new-password"
       />
-      <Button type="submit" className="w-full">
-        Create account
-      </Button>
+      <Button type="submit" className="w-full">Create account</Button>
       <p className="text-xs text-neutral-400 dark:text-neutral-500 text-center">
         By creating an account, you agree to our terms and privacy policy.
       </p>

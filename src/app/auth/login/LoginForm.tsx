@@ -8,22 +8,35 @@ import { Button } from "@/components/ui/Button"
 export function LoginForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
   const router = useRouter()
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const users = JSON.parse(localStorage.getItem("users") || "[]")
-    const user = users.find((u: Record<string, string>) => u.email === email && u.password === password)
-    if (user) {
-      localStorage.setItem("currentUser", JSON.stringify(user))
+    setError("")
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error || "Login failed")
+        return
+      }
+      localStorage.setItem("currentUser", JSON.stringify(data.user))
       router.push("/")
-    } else {
-      alert("Invalid email or password.")
+    } catch {
+      setError("Network error. Please try again.")
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <p className="text-sm text-accent-error bg-accent-error/10 rounded-lg px-3 py-2">{error}</p>
+      )}
       <Input
         label="Email"
         type="email"
@@ -42,9 +55,7 @@ export function LoginForm() {
         required
         autoComplete="current-password"
       />
-      <Button type="submit" className="w-full">
-        Sign in
-      </Button>
+      <Button type="submit" className="w-full">Sign in</Button>
     </form>
   )
 }
