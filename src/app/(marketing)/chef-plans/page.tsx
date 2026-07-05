@@ -3,6 +3,8 @@ import Link from "next/link"
 import Image from "next/image"
 import { getAllChefs, getMenuByChefId, getWeeklyPlansByChefId } from "@/lib/data-access"
 import type { MenuItemRecord } from "@/lib/data-access"
+import type { MenuItem } from "@/types"
+import { AddToCartButton } from "@/components/menu/AddToCartButton"
 import { Clock, ArrowRight, Users, Sparkles, ChefHat } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
 
@@ -131,7 +133,10 @@ export default async function ChefPlansPage() {
                         <div className="space-y-1">
                           {day.items.map((item) => (
                             <div key={item.id} className="text-[10px] sm:text-[11px] leading-tight">
-                              <p className="font-medium text-neutral-900 dark:text-neutral-100 truncate">{item.name}</p>
+                              <div className="flex items-start justify-between gap-1">
+                                <p className="font-medium text-neutral-900 dark:text-neutral-100 truncate">{item.name}</p>
+                                <AddToCartButton item={item as MenuItem} />
+                              </div>
                               <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-neutral-400 dark:text-neutral-500">
                                 <span>{formatCurrency(item.price)}</span>
                                 <span>·</span>
