@@ -34,7 +34,7 @@ export default async function ChefDetailPage({ params }: Props) {
       <ChefProfile chef={chef} />
 
       <section className="mt-12">
-        <h2 className="text-2xl font-bold text-neutral-900 mb-6">Menu</h2>
+        <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">Menu</h2>
         <MenuList items={chefMenu} />
       </section>
 

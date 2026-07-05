@@ -25,7 +25,7 @@ export function MenuList({ items }: MenuListProps) {
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
               selectedCategory === cat
                 ? "bg-brand-primary text-white"
-                : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
+                : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700"
             }`}
           >
             {cat}

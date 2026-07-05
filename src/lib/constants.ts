@@ -4,8 +4,7 @@ export const SITE_DESCRIPTION = "Connect with local home chefs in Rwanda. Discov
 export const SITE_URL = "https://iwacuchef.rw"
 
 export const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/chefs", label: "Browse Chefs" },
+  { href: "/", label: "Browse Chefs" },
   { href: "/about", label: "About" },
 ] as const
 

@@ -10,7 +10,7 @@ export function SearchBar({ className = "" }: { className?: string }) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (query.trim()) {
-      router.push(`/chefs?q=${encodeURIComponent(query.trim())}`)
+      router.push(`/?q=${encodeURIComponent(query.trim())}`)
     }
   }
 
@@ -23,7 +23,7 @@ export function SearchBar({ className = "" }: { className?: string }) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search chefs or meals..."
-        className="w-full rounded-xl border border-neutral-300 bg-white pl-10 pr-4 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary"
+        className="w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 pl-10 pr-4 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-300 dark:placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary"
       />
       <svg
         className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-300"
