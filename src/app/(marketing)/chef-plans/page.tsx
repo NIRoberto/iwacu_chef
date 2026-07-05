@@ -156,15 +156,15 @@ export default async function ChefPlansPage() {
       </div>
 
       {/* Bottom CTA for chefs */}
-      <div className="mt-12 rounded-2xl bg-brand-primary p-8 sm:p-10 text-center">
-        <ChefHat className="w-8 h-8 mx-auto text-white/80 mb-3" />
-        <h2 className="text-2xl sm:text-3xl font-bold text-white">Are you a home chef?</h2>
-        <p className="mt-2 text-white/80 max-w-md mx-auto">
+      <div className="mt-12 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 p-8 sm:p-10 text-center">
+        <ChefHat className="w-10 h-10 mx-auto text-brand-primary mb-4" />
+        <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100">Are you a home chef?</h2>
+        <p className="mt-2 text-neutral-500 dark:text-neutral-400 max-w-md mx-auto">
           Set your weekly menu, announce live cooking sessions, and grow your business with Iwacu Chef.
         </p>
         <Link
           href="/auth/register"
-          className="inline-flex items-center gap-2 mt-6 rounded-full bg-white text-brand-primary px-6 py-3 font-semibold hover:bg-neutral-100 transition-colors"
+          className="inline-flex items-center gap-2 mt-6 rounded-full bg-brand-primary text-white px-6 py-3 font-semibold hover:bg-brand-primary-hover transition-colors shadow-sm"
         >
           Become a chef
           <ArrowRight className="w-4 h-4" />

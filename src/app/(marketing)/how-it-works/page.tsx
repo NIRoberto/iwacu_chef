@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import { Search, ClipboardList, Truck, UtensilsCrossed, Calendar, CreditCard } from "lucide-react"
+import Link from "next/link"
+import { Search, ClipboardList, Truck, UtensilsCrossed, Calendar, CreditCard, Play, ArrowRight } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "How It Works — Iwacu Chef",
@@ -71,6 +72,40 @@ export default function HowItWorksPage() {
           </div>
         ))}
       </div>
+
+      {/* Video section */}
+      <section className="mt-16 rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+        <div className="grid grid-cols-1 sm:grid-cols-2">
+          <div className="p-6 sm:p-8 flex flex-col justify-center">
+            <p className="text-xs font-semibold uppercase tracking-wider text-brand-primary mb-2">Watch</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+              See Iwacu Chef in action
+            </h2>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-2 leading-relaxed">
+              Watch how home chefs prepare their signature dishes, how customers place orders,
+              and how easy it is to bring restaurant-quality home cooking to your table.
+            </p>
+            <div className="flex flex-wrap gap-3 mt-6">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 rounded-xl bg-brand-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-primary-hover transition-colors shadow-sm"
+              >
+                Browse chefs
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+          <div className="relative aspect-video sm:aspect-auto bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center group cursor-pointer">
+            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
+            <div className="relative w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <Play className="w-6 h-6 text-brand-primary ml-0.5" />
+            </div>
+            <p className="absolute bottom-4 left-4 text-xs text-white/80 font-medium">
+              How Iwacu Chef works — 2:34
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
