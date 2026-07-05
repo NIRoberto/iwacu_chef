@@ -20,10 +20,10 @@ export default async function ChefOrdersPage() {
           const items = JSON.parse(row.items) as { menuItemId: string; name: string; quantity: number; price: number }[]
           return (
             <div key={row.id} className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
                 <div>
                   <span className="font-semibold text-neutral-900 dark:text-neutral-100">Order #{row.id.slice(-8)}</span>
-                  <span className="text-sm text-neutral-400 dark:text-neutral-500 ml-3">{row.createdAt.toLocaleDateString()}</span>
+                  <span className="text-sm text-neutral-400 dark:text-neutral-500 ml-3 whitespace-nowrap">{row.createdAt.toLocaleDateString()}</span>
                 </div>
                 <OrderStatusBadge orderId={row.id} status={row.status} />
               </div>

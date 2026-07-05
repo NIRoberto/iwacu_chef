@@ -115,27 +115,27 @@ export default async function ChefPlansPage() {
               </div>
 
               {/* Day-by-day grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 divide-x divide-y sm:divide-y-0 border-b border-neutral-100 dark:border-neutral-800">
+              <div className="grid grid-cols-7 overflow-x-auto border-b border-neutral-100 dark:border-neutral-800">
                 {dayPlan.map((day) => {
                   const isToday = day.dayIndex === today
                   const isPast = day.dayIndex < today
                   return (
-                    <div key={day.dayIndex} className={`p-3 sm:p-4 ${isToday ? "bg-brand-primary/5 dark:bg-brand-primary/10" : ""} ${isPast ? "opacity-50" : ""}`}>
-                      <p className={`text-[11px] font-semibold uppercase tracking-wider mb-2 ${isToday ? "text-brand-primary" : "text-neutral-400 dark:text-neutral-500"}`}>
+                    <div key={day.dayIndex} className={`min-w-[120px] p-2 sm:p-3 ${isToday ? "bg-brand-primary/5 dark:bg-brand-primary/10" : ""} ${isPast ? "opacity-50" : ""}`}>
+                      <p className={`text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider mb-1.5 ${isToday ? "text-brand-primary" : "text-neutral-400 dark:text-neutral-500"}`}>
                         {DAY_NAMES[day.dayIndex].slice(0, 3)}
-                        {isToday && <span className="ml-1 text-[10px]">· Today</span>}
+                        {isToday && <span className="ml-1 text-[9px] sm:text-[10px]">· Today</span>}
                       </p>
                       {day.items.length === 0 ? (
-                        <p className="text-[10px] text-neutral-300 dark:text-neutral-600">Not cooking</p>
+                        <p className="text-[9px] sm:text-[10px] text-neutral-300 dark:text-neutral-600">Not cooking</p>
                       ) : (
-                        <div className="space-y-1.5">
+                        <div className="space-y-1">
                           {day.items.map((item) => (
-                            <div key={item.id} className="text-[11px] leading-tight">
+                            <div key={item.id} className="text-[10px] sm:text-[11px] leading-tight">
                               <p className="font-medium text-neutral-900 dark:text-neutral-100 truncate">{item.name}</p>
-                              <div className="flex items-center gap-1 text-[10px] text-neutral-400 dark:text-neutral-500">
+                              <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-neutral-400 dark:text-neutral-500">
                                 <span>{formatCurrency(item.price)}</span>
                                 <span>·</span>
-                                <Clock className="w-2.5 h-2.5" />
+                                <Clock className="w-2 h-2 sm:w-2.5 sm:h-2.5" />
                                 <span>{item.prepTime}</span>
                               </div>
                             </div>

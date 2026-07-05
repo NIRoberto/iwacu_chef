@@ -72,23 +72,23 @@ export function CartContent() {
             <div className="flex-1">
               <p className="font-medium text-neutral-900 dark:text-neutral-100">{item.menuItem.name}</p>
               <p className="text-sm text-neutral-400 dark:text-neutral-500">{formatCurrency(item.menuItem.price)} each</p>
-              <div className="flex items-center gap-2 mt-2">
+              <div className="flex flex-wrap items-center gap-2 mt-2">
                 <button
                   onClick={() => updateQuantity(item.menuItem.id, item.quantity - 1)}
-                  className="w-7 h-7 rounded-full border border-neutral-300 dark:border-neutral-600 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-sm"
+                  className="w-7 h-7 rounded-full border border-neutral-300 dark:border-neutral-600 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-sm shrink-0"
                 >
                   −
                 </button>
                 <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100 w-6 text-center">{item.quantity}</span>
                 <button
                   onClick={() => updateQuantity(item.menuItem.id, item.quantity + 1)}
-                  className="w-7 h-7 rounded-full border border-neutral-300 dark:border-neutral-600 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-sm"
+                  className="w-7 h-7 rounded-full border border-neutral-300 dark:border-neutral-600 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-sm shrink-0"
                 >
                   +
                 </button>
                 <button
                   onClick={() => removeItem(item.menuItem.id)}
-                  className="ml-4 text-xs text-accent-error hover:underline"
+                  className="ml-0 sm:ml-4 text-xs text-accent-error hover:underline"
                 >
                   Remove
                 </button>

@@ -63,7 +63,7 @@ export function PlanEditor({ chefName, items, initialPlans }: Props) {
   return (
     <div>
       {/* Day tabs */}
-      <div className="flex gap-1 mb-6 overflow-x-auto">
+      <div className="flex gap-1 mb-6 overflow-x-auto scrollbar-thin pb-1">
         {DAY_NAMES.map((name, i) => {
           const count = plans[i]?.items.length ?? 0
           const isToday = i === new Date().getDay()

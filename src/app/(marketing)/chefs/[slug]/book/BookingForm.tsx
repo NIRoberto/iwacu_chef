@@ -87,7 +87,7 @@ export function BookingForm({ chef, eventTypes }: Props) {
                 type="button"
                 onClick={() => setEventTypeId(et.id)}
                 disabled={!chefHasEvent}
-                className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-center transition-all ${
+                className={`flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 sm:p-4 text-center transition-all ${
                   eventTypeId === et.id
                     ? "border-brand-primary bg-brand-primary-light text-brand-primary"
                     : chefHasEvent

@@ -62,65 +62,9 @@ export default async function ChefDetailPage({ params }: Props) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Main content */}
-        <div className="lg:col-span-2 space-y-10">
-          {/* About */}
-          <section>
-            <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">About {chef.name}</h2>
-            <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed whitespace-pre-line">{chef.story}</p>
-            <div className="flex flex-wrap gap-2 mt-4">
-              {chef.cuisineType.map((c) => (
-                <Badge key={c} className={CUISINE_COLORS[c] ?? ""}>{c}</Badge>
-              ))}
-            </div>
-          </section>
-
-          {/* What I offer — Event types */}
-          {chef.eventTypes && chef.eventTypes.length > 0 && (
-            <section>
-              <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">What I offer</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {chef.eventTypes.map((et) => (
-                  <div key={et.id} className="flex items-start gap-3 rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4">
-                    {(() => {
-                      const Icon = EVENT_ICONS[et.name]
-                      return Icon ? <Icon className="w-6 h-6 mt-0.5 text-brand-primary" /> : null
-                    })()}
-                    <div>
-                      <p className="font-semibold text-neutral-900 dark:text-neutral-100 text-sm">{et.name}</p>
-                      <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">{et.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Menu */}
-          <section>
-            <div className="flex items-end justify-between mb-4">
-              <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">Menu</h2>
-              <span className="text-sm text-neutral-400 dark:text-neutral-500">{chefMenu.length} items</span>
-            </div>
-            <MenuList items={chefMenu} />
-          </section>
-
-          {/* Reviews */}
-          <section>
-            <div className="flex items-center gap-3 mb-4">
-              <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">Reviews</h2>
-              <span className="flex items-center gap-1 text-sm text-neutral-500">
-                <StarRating rating={chef.rating} size="sm" />
-                ({chef.reviewCount})
-              </span>
-            </div>
-            <ReviewSection reviews={chefReviews} />
-          </section>
-        </div>
-
-        {/* Sidebar — Booking card */}
-        <div className="lg:col-span-1">
-          <div className="sticky top-24 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-6 shadow-sm">
+        {/* Booking sidebar — first on mobile */}
+        <div className="lg:col-span-1 lg:order-last">
+          <div className="lg:sticky lg:top-24 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-6 shadow-sm">
             <div className="flex items-baseline gap-1 mb-4">
               <span className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
                 {chef.priceRange === 1 ? "$" : chef.priceRange === 2 ? "$$" : "$$$"}
@@ -176,6 +120,62 @@ export default async function ChefDetailPage({ params }: Props) {
               You won&apos;t be charged yet
             </p>
           </div>
+        </div>
+
+        {/* Main content */}
+        <div className="lg:col-span-2 space-y-10">
+          {/* About */}
+          <section>
+            <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">About {chef.name}</h2>
+            <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed whitespace-pre-line">{chef.story}</p>
+            <div className="flex flex-wrap gap-2 mt-4">
+              {chef.cuisineType.map((c) => (
+                <Badge key={c} className={CUISINE_COLORS[c] ?? ""}>{c}</Badge>
+              ))}
+            </div>
+          </section>
+
+          {/* What I offer — Event types */}
+          {chef.eventTypes && chef.eventTypes.length > 0 && (
+            <section>
+              <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">What I offer</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {chef.eventTypes.map((et) => (
+                  <div key={et.id} className="flex items-start gap-3 rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4">
+                    {(() => {
+                      const Icon = EVENT_ICONS[et.name]
+                      return Icon ? <Icon className="w-6 h-6 mt-0.5 text-brand-primary" /> : null
+                    })()}
+                    <div>
+                      <p className="font-semibold text-neutral-900 dark:text-neutral-100 text-sm">{et.name}</p>
+                      <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">{et.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Menu */}
+          <section>
+            <div className="flex items-end justify-between mb-4">
+              <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">Menu</h2>
+              <span className="text-sm text-neutral-400 dark:text-neutral-500">{chefMenu.length} items</span>
+            </div>
+            <MenuList items={chefMenu} />
+          </section>
+
+          {/* Reviews */}
+          <section>
+            <div className="flex items-center gap-3 mb-4">
+              <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">Reviews</h2>
+              <span className="flex items-center gap-1 text-sm text-neutral-500">
+                <StarRating rating={chef.rating} size="sm" />
+                ({chef.reviewCount})
+              </span>
+            </div>
+            <ReviewSection reviews={chefReviews} />
+          </section>
         </div>
       </div>
     </div>

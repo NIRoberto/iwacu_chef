@@ -28,15 +28,15 @@ export default async function ChefBookingsPage() {
           const items = JSON.parse(b.menuPlan) as string[]
           return (
             <div key={b.id} className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+                <div className="flex items-start gap-2 min-w-0">
                   {(() => {
                     const Icon = EVENT_ICONS[b.eventType.name]
-                    return Icon ? <Icon className="w-5 h-5" /> : null
+                    return Icon ? <Icon className="w-5 h-5 mt-0.5 shrink-0" /> : null
                   })()}
-                  <div>
+                  <div className="min-w-0">
                     <span className="font-semibold text-neutral-900 dark:text-neutral-100">{b.eventType.name}</span>
-                    <span className="text-sm text-neutral-400 dark:text-neutral-500 ml-2">
+                    <span className="text-sm text-neutral-400 dark:text-neutral-500 ml-2 whitespace-nowrap">
                       {b.date.toLocaleDateString()} · {b.guestCount} guest{b.guestCount > 1 ? "s" : ""}
                     </span>
                   </div>

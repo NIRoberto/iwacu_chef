@@ -55,7 +55,7 @@ export default async function HomePage() {
           </div>
           <Link
             href="/about"
-            className="hidden sm:inline-flex text-sm font-medium text-brand-primary hover:text-brand-primary-hover transition-colors"
+            className="inline-flex text-sm font-medium text-brand-primary hover:text-brand-primary-hover transition-colors"
           >
             View all &rarr;
           </Link>

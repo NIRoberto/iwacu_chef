@@ -90,16 +90,16 @@ export default async function DashboardPage() {
           { label: "Pending", value: pendingOrders, icon: Clock, color: "bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400", trend: "Needs attention" },
           { label: "Bookings", value: pendingBookings + confirmedBookings, icon: CalendarCheck, color: "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400", trend: `${pendingBookings} pending` },
         ].map((stat) => (
-          <div key={stat.label} className="rounded-2xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-3">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${stat.color}`}>
-                <stat.icon className="w-5 h-5" />
+          <div key={stat.label} className="rounded-2xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-3 sm:p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center ${stat.color}`}>
+                <stat.icon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <span className="text-[11px] font-medium text-neutral-400 dark:text-neutral-500 bg-neutral-50 dark:bg-neutral-800 rounded-full px-2 py-0.5">
+              <span className="text-[10px] sm:text-[11px] font-medium text-neutral-400 dark:text-neutral-500 bg-neutral-50 dark:bg-neutral-800 rounded-full px-1.5 sm:px-2 py-0.5 truncate max-w-[100px] sm:max-w-none">
                 {stat.trend}
               </span>
             </div>
-            <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{stat.value}</p>
+            <p className="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-neutral-100 truncate">{stat.value}</p>
             <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">{stat.label}</p>
           </div>
         ))}
