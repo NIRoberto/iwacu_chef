@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1A1614;
 }
 
 @theme inline {
@@ -10,17 +10,26 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-brand-primary: #C75B2A;
+  --color-brand-primary-hover: #A84920;
+  --color-brand-primary-light: #F5E6D3;
+  --color-brand-secondary: #2D6A4F;
+  --color-brand-secondary-hover: #1B4332;
+  --color-accent-gold: #D4A853;
+  --color-accent-error: #C24038;
+  --color-accent-info: #3B7EA5;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #F0EDE8;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
 }
