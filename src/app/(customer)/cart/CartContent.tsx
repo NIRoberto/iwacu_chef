@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/Button"
 import { formatCurrency } from "@/lib/utils"
 
@@ -13,12 +14,12 @@ export function CartContent() {
         <div className="text-4xl mb-4">🛒</div>
         <p className="text-neutral-400 text-lg">Your cart is empty.</p>
         <p className="text-neutral-300 text-sm mt-1">Browse chefs and add items to get started.</p>
-        <a
+        <Link
           href="/chefs"
           className="mt-6 inline-flex rounded-full bg-brand-primary px-6 py-2.5 text-sm font-medium text-white hover:bg-brand-primary-hover transition-colors"
         >
           Browse chefs
-        </a>
+        </Link>
       </div>
     )
   }

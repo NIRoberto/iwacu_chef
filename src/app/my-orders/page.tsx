@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { orders } from "@/lib/data/orders"
 import { formatCurrency } from "@/lib/utils"
 import { Badge } from "@/components/ui/Badge"
@@ -17,7 +18,7 @@ const statusBadge: Record<string, "warning" | "info" | "success" | "default" | "
   declined: "error",
 }
 
-export default function OrdersPage() {
+export default function MyOrdersPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 sm:px-6 py-12 sm:py-16">
       <h1 className="text-3xl font-bold text-neutral-900 mb-8">My orders</h1>
@@ -25,12 +26,12 @@ export default function OrdersPage() {
       {orders.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-neutral-400 text-lg">No orders yet.</p>
-          <a
+          <Link
             href="/chefs"
             className="mt-4 inline-flex text-brand-primary text-sm font-medium hover:text-brand-primary-hover transition-colors"
           >
             Browse chefs &rarr;
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="space-y-4">

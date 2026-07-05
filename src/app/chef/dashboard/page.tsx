@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { orders } from "@/lib/data/orders"
 import { formatCurrency } from "@/lib/utils"
 
@@ -43,6 +44,15 @@ export default function DashboardPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-8">
+        <Link
+          href="/chef/orders"
+          className="text-sm font-medium text-brand-primary hover:text-brand-primary-hover transition-colors"
+        >
+          View all orders &rarr;
+        </Link>
       </div>
     </div>
   )

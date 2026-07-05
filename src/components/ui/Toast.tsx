@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef } from "react"
 
 interface ToastProps {
   message: string
@@ -11,20 +11,16 @@ interface ToastProps {
 }
 
 export function Toast({ message, type = "info", show, onClose, duration = 4000 }: ToastProps) {
-  const [visible, setVisible] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => {
     if (show) {
-      setVisible(true)
-      const timer = setTimeout(() => {
-        setVisible(false)
-        setTimeout(onClose, 300)
+      timerRef.current = setTimeout(() => {
+        onClose()
       }, duration)
-      return () => clearTimeout(timer)
+      return () => clearTimeout(timerRef.current)
     }
   }, [show, duration, onClose])
-
-  if (!show) return null
 
   const colors = {
     success: "bg-brand-secondary text-white",
@@ -32,19 +28,19 @@ export function Toast({ message, type = "info", show, onClose, duration = 4000 }
     info: "bg-neutral-900 text-white",
   }
 
-  return (
+  return show ? (
     <div
-      className={`fixed bottom-6 right-6 z-50 rounded-xl px-5 py-3 shadow-lg transition-all duration-300 ${colors[type]} ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+      className={`fixed bottom-6 right-6 z-50 rounded-xl px-5 py-3 shadow-lg transition-all duration-300 ${colors[type]}`}
       role="alert"
     >
       <div className="flex items-center gap-3">
         <span className="text-sm font-medium">{message}</span>
-        <button onClick={() => { setVisible(false); setTimeout(onClose, 300) }} className="opacity-70 hover:opacity-100" aria-label="Dismiss">
+        <button onClick={onClose} className="opacity-70 hover:opacity-100" aria-label="Dismiss">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         </button>
       </div>
     </div>
-  )
+  ) : null
 }

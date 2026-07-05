@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { chefs } from "@/lib/data/chefs"
 import { SearchBar } from "@/components/layout/SearchBar"
 import { ChefCard } from "@/components/chefs/ChefCard"
@@ -49,16 +50,16 @@ export default async function ChefsPage({
       </div>
 
       <div className="flex flex-wrap gap-2 mb-8">
-        <a
+        <Link
           href="/chefs"
           className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
             !cuisine && !q ? "bg-brand-primary text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
           }`}
         >
           All
-        </a>
+        </Link>
         {allCuisines.map((c) => (
-          <a
+          <Link
             key={c}
             href={`/chefs?cuisine=${encodeURIComponent(c)}`}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
@@ -66,16 +67,16 @@ export default async function ChefsPage({
             }`}
           >
             {c}
-          </a>
+          </Link>
         ))}
       </div>
 
       {filtered.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-neutral-400 text-lg">No chefs found matching your search.</p>
-          <a href="/chefs" className="mt-4 inline-flex text-brand-primary text-sm font-medium hover:text-brand-primary-hover">
+          <Link href="/chefs" className="mt-4 inline-flex text-brand-primary text-sm font-medium hover:text-brand-primary-hover">
             Clear filters &rarr;
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
