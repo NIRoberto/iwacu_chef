@@ -16,7 +16,7 @@ export default async function ChefOrdersPage() {
       <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-8">Orders</h1>
 
       <div className="space-y-3">
-        {orders.map((row) => {
+        {orders.map((row: { id: string; chefId: string; customerId: string; items: string; status: string; total: number; note: string; pickupTime: string; createdAt: Date }) => {
           const items = JSON.parse(row.items) as { menuItemId: string; name: string; quantity: number; price: number }[]
           return (
             <div key={row.id} className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5">

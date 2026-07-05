@@ -27,7 +27,7 @@ export default async function ChefPlansPage() {
   const chefPlanMap = new Map<string, { dayOfWeek: number; items: string[] }[]>()
   chefs.forEach((c, i) => {
     chefMenuMap.set(c.id, allMenus[i])
-    chefPlanMap.set(c.id, allPlans[i].map((p) => ({ dayOfWeek: p.dayOfWeek, items: JSON.parse(p.items) as string[] })))
+    chefPlanMap.set(c.id, allPlans[i].map((p: { dayOfWeek: number; items: string }) => ({ dayOfWeek: p.dayOfWeek, items: JSON.parse(p.items) as string[] })))
   })
 
   const today = new Date().getDay()

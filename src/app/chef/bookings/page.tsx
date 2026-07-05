@@ -10,8 +10,11 @@ export const metadata: Metadata = {
   description: "View and manage booking requests.",
 }
 
+import type { Prisma } from "@/generated/prisma/client"
+type BookingWithEvent = Prisma.BookingGetPayload<{ include: { eventType: true } }>
+
 export default async function ChefBookingsPage() {
-  const bookings = await prisma.booking.findMany({
+  const bookings: BookingWithEvent[] = await prisma.booking.findMany({
     orderBy: { createdAt: "desc" },
     include: { eventType: true },
   })
