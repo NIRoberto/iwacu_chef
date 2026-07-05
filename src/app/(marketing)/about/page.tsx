@@ -120,23 +120,23 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-brand-primary py-14 sm:py-20">
+      <section className="border-t border-neutral-100 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 py-14 sm:py-20">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">Ready to taste the difference?</h2>
-          <p className="mt-3 text-lg text-white/80 max-w-xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-100">Ready to taste the difference?</h2>
+          <p className="mt-3 text-lg text-neutral-500 dark:text-neutral-400 max-w-xl mx-auto">
             Browse local chefs, explore their menus, and order homemade meals delivered to your door.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 rounded-full bg-white text-brand-primary px-8 py-3 font-semibold hover:bg-neutral-100 transition-colors shadow-lg"
+              className="inline-flex items-center gap-2 rounded-full bg-brand-primary text-white px-8 py-3 font-semibold hover:bg-brand-primary-hover transition-colors shadow-sm"
             >
               Browse chefs
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/how-it-works"
-              className="inline-flex items-center gap-2 rounded-full border-2 border-white/40 text-white px-8 py-3 font-medium hover:border-white/70 transition-colors"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-neutral-300 dark:border-neutral-600 text-neutral-600 dark:text-neutral-400 px-8 py-3 font-medium hover:border-brand-primary hover:text-brand-primary transition-colors"
             >
               How it works
             </Link>
