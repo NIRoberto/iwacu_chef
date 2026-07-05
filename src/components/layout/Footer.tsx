@@ -30,7 +30,7 @@ export function Footer() {
             <h3 className="text-sm font-semibold text-white mb-3">For Chefs</h3>
             <ul className="space-y-2">
               <li><Link href="/auth/register" className="text-sm hover:text-white transition-colors">Become a Chef</Link></li>
-              <li><Link href="/chef/dashboard" className="text-sm hover:text-white transition-colors">Chef Dashboard</Link></li>
+              <li><Link href="/dashboard" className="text-sm hover:text-white transition-colors">Chef Dashboard</Link></li>
             </ul>
           </div>
 
